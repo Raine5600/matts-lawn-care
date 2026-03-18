@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matt's Lawn Care & Snow Plow LLC — SW Michigan & N. Indiana</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --accent: #8bc53d;
+      --accent-rgb: 139, 197, 61;
+      --accent-dark: #6fa52a;
+      --bg: #02040a;
+      --bg2: #070d0f;
+      --text: #ffffff;
+      --text-secondary: #99A1AF;
+      --card-bg: rgba(255,255,255,0.03);
+      --card-border: rgba(255,255,255,0.07);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    ::selection { background: var(--accent); color: #000; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(139,197,61,0.3); border-radius: 3px; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, h5 {
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    /* ── SCROLL PROGRESS ── */
+    #scrollProgress {
+      position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+      background: linear-gradient(90deg, var(--accent), #b8e04a);
+      z-index: 10000; transition: width 0.08s linear; pointer-events: none;
+    }
+
+    /* ── STARSCAPE ── */
+    #starscape {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0; pointer-events: none; opacity: 0.5;
+    }
+
+    /* ── NAVBAR ── */
+    #navbar {
+      position: fixed; top: 12px; left: 0; right: 0; z-index: 1000;
+      transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    .nav-inner {
+      max-width: 100%; margin: 0 auto; padding: 14px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+    #navbar.nav-scrolled .nav-inner {
+      max-width: 900px;
+      background: rgba(2,4,10,0.85);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-radius: 100px;
+      padding: 10px 28px;
+    }
+    .nav-logo img { height: 36px; width: auto; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 32px; }
+    .nav-links a {
+      color: rgba(255,255,255,0.7); text-decoration: none;
+      font-size: 0.88rem; font-weight: 600; transition: color 0.2s;
+      font-family: 'Open Sans', sans-serif;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-cta {
+      background: var(--accent) !important; color: #000 !important;
+      padding: 9px 22px; border-radius: 100px; font-weight: 700 !important;
+      box-shadow: 0 0 18px rgba(139,197,61,0.35);
+      transition: box-shadow 0.3s ease, transform 0.2s ease !important;
+    }
+    .nav-cta:hover { box-shadow: 0 0 28px rgba(139,197,61,0.55) !important; transform: translateY(-1px); }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-inner { padding: 10px 24px; }
+    }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative; height: 100vh; width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; z-index: 1;
+    }
+    .hero-video {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; z-index: 1;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 2;
+      background: linear-gradient(
+        to bottom,
+        rgba(2,4,10,0.45) 0%,
+        rgba(2,4,10,0.2) 40%,
+        rgba(2,4,10,0.6) 80%,
+        rgba(2,4,10,1) 100%
+      );
+    }
+    .hero-content {
+      position: relative; z-index: 3; text-align: center; padding: 0 24px;
+      max-width: 900px;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 18px; border-radius: 100px; margin-bottom: 28px;
+      border: 1px solid rgba(139,197,61,0.4);
+      background: rgba(139,197,61,0.08);
+      color: var(--accent); font-size: 0.68rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.2em;
+      font-family: 'Open Sans', sans-serif;
+    }
+    .hero-badge::before {
+      content: ''; width: 7px; height: 7px; border-radius: 50%;
+      background: var(--accent); display: block;
+      box-shadow: 0 0 8px var(--accent); animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+    .hero-title {
+      font-family: 'Tajawal', sans-serif;
+      font-size: clamp(3rem, 9vw, 7.5rem);
+      font-weight: 900; line-height: 0.9;
+      letter-spacing: -0.04em; margin-bottom: 24px;
+      text-shadow: 0 4px 40px rgba(0,0,0,0.6);
+    }
+    .hero-title .green { color: var(--accent); }
+    .hero-subtitle {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: rgba(255,255,255,0.75); max-width: 580px;
+      margin: 0 auto 40px; line-height: 1.6; font-weight: 300;
+    }
+    .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: #000;
+      padding: 16px 36px; border-radius: 12px;
+      font-weight: 700; font-size: 1rem; text-decoration: none;
+      font-family: 'Tajawal', sans-serif;
+      box-shadow: 0 0 24px rgba(139,197,61,0.4);
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover { box-shadow: 0 0 40px rgba(139,197,61,0.6); transform: translateY(-3px); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: #fff;
+      padding: 16px 36px; border-radius: 12px;
+      font-weight: 600; font-size: 1rem; text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.25);
+      font-family: 'Tajawal', sans-serif;
+      transition: all 0.3s ease;
+    }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-3px); }
+    .scroll-hint {
+      position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: rgba(255,255,255,0.4); font-size: 0.72rem; letter-spacing: 0.15em;
+      text-transform: uppercase; z-index: 3;
+    }
+    .scroll-arrow {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, rgba(139,197,61,0.8), transparent);
+      animation: scrollArrow 2s ease-in-out infinite;
+    }
+    @keyframes scrollArrow {
+      0%, 100% { transform: scaleY(1); opacity: 1; }
+      50% { transform: scaleY(0.5); opacity: 0.4; }
+    }
+
+    /* ── SECTION SHARED ── */
+    .section-header { text-align: center; margin-bottom: 64px; }
+    .section-label {
+      display: inline-block; color: var(--accent); font-size: 0.65rem;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 0.25em;
+      margin-bottom: 14px; font-family: 'Open Sans', sans-serif;
+    }
+    .section-title {
+      font-family: 'Tajawal', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 900; letter-spacing: -0.04em; line-height: 1;
+    }
+    .section-sub {
+      color: var(--text-secondary); max-width: 540px;
+      margin: 16px auto 0; line-height: 1.6; font-size: 0.95rem;
+    }
+
+    /* ── SERVICES ── */
+    #services {
+      position: relative; z-index: 1;
+      padding: 120px 32px;
+    }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 20px; max-width: 1200px; margin: 0 auto;
+    }
+    .service-card {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 20px; overflow: hidden;
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(139,197,61,0.25);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 30px rgba(139,197,61,0.06);
+    }
+    .service-img {
+      width: 100%; aspect-ratio: 4/5; object-fit: cover; display: block;
+      filter: brightness(0.85) saturate(0.9);
+      transition: filter 0.3s ease, transform 0.4s ease;
+    }
+    .service-card:hover .service-img { filter: brightness(1) saturate(1.1); transform: scale(1.03); }
+    .service-img-wrap { overflow: hidden; }
+    .service-body { padding: 24px; }
+    .service-icon { font-size: 1.5rem; margin-bottom: 10px; }
+    .service-title {
+      font-family: 'Tajawal', sans-serif;
+      font-size: 1.05rem; font-weight: 800; margin-bottom: 8px;
+    }
+    .service-desc { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; }
+    @media (max-width: 1024px) { .services-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 640px) { .services-grid { grid-template-columns: 1fr; } }
+
+    /* ── SPECS / STATS ── */
+    #specs {
+      position: relative; z-index: 1;
+      background: linear-gradient(180deg, rgba(139,197,61,0.03) 0%, transparent 100%);
+      border-top: 1px solid var(--card-border);
+      border-bottom: 1px solid var(--card-border);
+    }
+    .specs-inner {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      max-width: 1100px; margin: 0 auto; padding: 80px 32px;
+    }
+    .spec-item {
+      text-align: center; padding: 40px 20px;
+      border-right: 1px solid var(--card-border);
+    }
+    .spec-item:last-child { border-right: none; }
+    .spec-number {
+      font-family: 'Tajawal', sans-serif;
+      font-size: clamp(2.5rem, 4vw, 4rem);
+      font-weight: 900; display: block;
+      color: var(--accent); line-height: 1;
+      transition: text-shadow 0.3s ease;
+    }
+    .spec-number.counting { text-shadow: 0 0 30px rgba(139,197,61,0.5); }
+    .spec-label {
+      display: block; font-size: 0.82rem;
+      color: var(--text-secondary); margin-top: 8px;
+      text-transform: uppercase; letter-spacing: 0.1em;
+    }
+    @media (max-width: 768px) {
+      .specs-inner { grid-template-columns: repeat(2,1fr); }
+      .spec-item { border-right: none; border-bottom: 1px solid var(--card-border); }
+      .spec-item:nth-child(3), .spec-item:last-child { border-bottom: none; }
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      position: relative; z-index: 1;
+      padding: 120px 32px;
+    }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center; max-width: 1100px; margin: 0 auto;
+    }
+    .about-text .section-header { text-align: left; margin-bottom: 28px; }
+    .about-text p {
+      color: var(--text-secondary); line-height: 1.8;
+      font-size: 0.95rem; margin-bottom: 24px;
+    }
+    .about-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+    .about-tag {
+      padding: 7px 16px; border-radius: 100px;
+      border: 1px solid rgba(139,197,61,0.25);
+      background: rgba(139,197,61,0.06);
+      color: var(--accent); font-size: 0.78rem;
+      font-weight: 600; font-family: 'Open Sans', sans-serif;
+    }
+    .about-images {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .about-img {
+      width: 100%; border-radius: 16px; object-fit: cover;
+      aspect-ratio: 3/4;
+      border: 1px solid var(--card-border);
+      transition: transform 0.4s ease;
+    }
+    .about-img:first-child { margin-top: 40px; }
+    .about-img:hover { transform: scale(1.02); }
+    @media (max-width: 900px) {
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .about-images { grid-template-columns: repeat(2,1fr); }
+      .about-img:first-child { margin-top: 0; }
+    }
+
+    /* ── WORK GALLERY ── */
+    #work {
+      position: relative; z-index: 1;
+      padding: 120px 32px;
+      background: rgba(255,255,255,0.01);
+    }
+    .gallery-masonry {
+      columns: 4; column-gap: 16px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .gallery-item {
+      break-inside: avoid; margin-bottom: 16px;
+      border-radius: 14px; overflow: hidden;
+      border: 1px solid var(--card-border);
+      position: relative;
+    }
+    .gallery-item img {
+      width: 100%; display: block;
+      transition: transform 0.5s ease, filter 0.3s ease;
+      filter: brightness(0.88) saturate(0.85);
+    }
+    .gallery-item:hover img {
+      transform: scale(1.05);
+      filter: brightness(1.05) saturate(1.1);
+    }
+    @media (max-width: 1024px) { .gallery-masonry { columns: 3; } }
+    @media (max-width: 768px) { .gallery-masonry { columns: 2; } }
+    @media (max-width: 480px) { .gallery-masonry { columns: 1; } }
+
+    /* ── TESTIMONIALS ── */
+    #testimonials {
+      position: relative; z-index: 1;
+      padding: 120px 0;
+    }
+    .testimonials-header { padding: 0 32px; margin-bottom: 48px; }
+    .testimonials-track {
+      display: flex; gap: 24px;
+      overflow-x: auto; scroll-snap-type: x mandatory;
+      padding: 16px 32px 40px;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; cursor: grab;
+    }
+    .testimonials-track:active { cursor: grabbing; }
+    .testimonials-track::-webkit-scrollbar { display: none; }
+    .testimonial-card {
+      min-width: 380px; scroll-snap-align: start;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 20px; padding: 36px;
+      flex-shrink: 0;
+      transition: border-color 0.3s ease;
+    }
+    .testimonial-card:hover { border-color: rgba(139,197,61,0.2); }
+    .stars { color: var(--accent); font-size: 1rem; margin-bottom: 20px; letter-spacing: 2px; }
+    .testimonial-quote {
+      font-size: 0.95rem; line-height: 1.7;
+      color: rgba(255,255,255,0.82); margin-bottom: 28px;
+      font-style: italic;
+    }
+    .testimonial-author-name {
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 700; font-size: 1rem;
+    }
+    .testimonial-author-role {
+      font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px;
+    }
+    @media (max-width: 640px) { .testimonial-card { min-width: 300px; } }
+
+    /* ── CTA ── */
+    #cta {
+      position: relative; z-index: 1;
+      padding: 120px 32px; text-align: center; overflow: hidden;
+    }
+    .cta-orb {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 600px; height: 600px; border-radius: 50%;
+      background: var(--accent); filter: blur(200px);
+      opacity: 0.07; pointer-events: none;
+    }
+    .cta-content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+    .cta-title {
+      font-family: 'Tajawal', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 900; letter-spacing: -0.04em;
+      line-height: 0.95; margin-bottom: 24px;
+    }
+    .cta-title .green { color: var(--accent); }
+    .cta-sub {
+      color: var(--text-secondary); margin-bottom: 48px;
+      font-size: 1rem; line-height: 1.6;
+    }
+    .cta-phone {
+      display: block; font-family: 'Tajawal', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900;
+      color: var(--accent); text-decoration: none; letter-spacing: -0.02em;
+      margin-bottom: 32px;
+      text-shadow: 0 0 40px rgba(139,197,61,0.3);
+      transition: text-shadow 0.3s ease;
+    }
+    .cta-phone:hover { text-shadow: 0 0 60px rgba(139,197,61,0.5); }
+    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative; z-index: 1;
+      border-top: 1px solid var(--card-border);
+      padding: 60px 32px 40px;
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; flex-direction: column; align-items: center; gap: 32px;
+    }
+    .footer-logo img { height: 44px; width: auto; opacity: 0.9; }
+    .footer-links {
+      display: flex; gap: 32px; flex-wrap: wrap; justify-content: center;
+    }
+    .footer-links a {
+      color: var(--text-secondary); text-decoration: none;
+      font-size: 0.87rem; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-copy { color: rgba(255,255,255,0.25); font-size: 0.78rem; text-align: center; }
+    .footer-service-area {
+      color: var(--text-secondary); font-size: 0.82rem;
+      text-align: center; max-width: 500px; line-height: 1.6;
+    }
+
+    /* ── DIVIDER ── */
+    .section-divider {
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--card-border), transparent);
+      position: relative; z-index: 1;
+    }
+
+    /* ── FADE-IN ANIMATION ── */
+    .fade-in {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+    .fade-in-delay-3 { transition-delay: 0.3s; }
+    .fade-in-delay-4 { transition-delay: 0.4s; }
+  </style>
+</head>
+<body>
+
+  <!-- Scroll progress -->
+  <div id="scrollProgress"></div>
+
+  <!-- Starscape -->
+  <canvas id="starscape"></canvas>
+
+  <!-- ── NAVBAR ── -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2023/02/matts_new_trans.png" alt="Matt's Lawn Care" />
+      </div>
+      <div class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#work">Our Work</a>
+        <a href="#testimonials">Reviews</a>
+        <a href="#cta" class="nav-cta">Get a Quote</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section id="hero">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="hero.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Serving SW Michigan &amp; N. Indiana</div>
+      <h1 class="hero-title">
+        ELEVATING<br /><span class="green">LANDSCAPES</span><br />SINCE 2019
+      </h1>
+      <p class="hero-subtitle">
+        More than just lawn mowing — full-service property care for residential
+        and commercial clients across the Michiana region.
+      </p>
+      <div class="hero-buttons">
+        <a href="#cta" class="btn-primary">Get a Free Quote</a>
+        <a href="#services" class="btn-secondary">Our Services</a>
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- ── SPECS ── -->
+  <section id="specs">
+    <div class="specs-inner">
+      <div class="spec-item fade-in">
+        <span class="spec-number" data-target="2019" data-suffix="" data-mode="year">2019</span>
+        <span class="spec-label">Est. Year</span>
+      </div>
+      <div class="spec-item fade-in fade-in-delay-1">
+        <span class="spec-number" data-target="6" data-suffix="+" data-mode="int">0</span>
+        <span class="spec-label">Years in Business</span>
+      </div>
+      <div class="spec-item fade-in fade-in-delay-2">
+        <span class="spec-number" data-target="500" data-suffix="+" data-mode="int">0</span>
+        <span class="spec-label">Properties Served</span>
+      </div>
+      <div class="spec-item fade-in fade-in-delay-3">
+        <span class="spec-number" data-target="100" data-suffix="%" data-mode="int">0</span>
+        <span class="spec-label">Satisfaction Guaranteed</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SERVICES ── -->
+  <section id="services">
+    <div class="section-header fade-in">
+      <span class="section-label">What We Do</span>
+      <h2 class="section-title">Full-Service Property Care</h2>
+      <p class="section-sub">Commercial and residential — year-round maintenance that keeps your property looking its best in every season.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card fade-in">
+        <div class="service-img-wrap">
+          <img class="service-img" src="https://mattslawncare.biz/wp-content/uploads/2024/02/property-landscape-1.png" alt="Lawn Maintenance" loading="lazy" />
+        </div>
+        <div class="service-body">
+          <div class="service-icon">🌿</div>
+          <h3 class="service-title">Lawn Maintenance</h3>
+          <p class="service-desc">Commercial &amp; residential mowing, edging, trimming, and full seasonal lawn care to keep every property pristine.</p>
+        </div>
+      </div>
+      <div class="service-card fade-in fade-in-delay-1">
+        <div class="service-img-wrap">
+          <img class="service-img" src="https://mattslawncare.biz/wp-content/uploads/2024/02/irrigation-maintenance-2-e1708992242114.png" alt="Landscaping & Irrigation" loading="lazy" />
+        </div>
+        <div class="service-body">
+          <div class="service-icon">💧</div>
+          <h3 class="service-title">Landscaping &amp; Irrigation</h3>
+          <p class="service-desc">Precision irrigation systems, garden bed design, planting, and landscaping tailored to your outdoor space.</p>
+        </div>
+      </div>
+      <div class="service-card fade-in fade-in-delay-2">
+        <div class="service-img-wrap">
+          <img class="service-img" src="https://mattslawncare.biz/wp-content/uploads/2024/02/excavation-bobcat.png" alt="Excavation & Bobcat Work" loading="lazy" />
+        </div>
+        <div class="service-body">
+          <div class="service-icon">🚜</div>
+          <h3 class="service-title">Excavation &amp; Bobcat Work</h3>
+          <p class="service-desc">Site preparation, grading, and precision earthworks using state-of-the-art Kubota equipment.</p>
+        </div>
+      </div>
+      <div class="service-card fade-in fade-in-delay-3">
+        <div class="service-img-wrap">
+          <img class="service-img" src="https://mattslawncare.biz/wp-content/uploads/2024/02/snow-removal-commercial.png" alt="Snow Removal" loading="lazy" />
+        </div>
+        <div class="service-body">
+          <div class="service-icon">❄️</div>
+          <h3 class="service-title">Snow Removal &amp; Plowing</h3>
+          <p class="service-desc">Reliable snow and ice management for residential and commercial properties — keeping your paths clear all winter.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── ABOUT ── -->
+  <section id="about">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-header">
+          <span class="section-label">About Us</span>
+          <h2 class="section-title">Matt's Lawn Care<br />&amp; Snow Plow LLC</h2>
+        </div>
+        <p>Established in 2019, Matt's Lawn Care and Snow Removal LLC stands as a premier full-service maintenance provider serving the Michiana region. Specializing in both commercial and residential sectors, we offer comprehensive year-round property upkeep.</p>
+        <p>From top-tier lawn maintenance and efficient snow and ice management, to meticulous irrigation and landscaping services, expert excavation and Kubota work — we cater to the diverse needs of customers across Northern Indiana and Southwestern Michigan.</p>
+        <p>Trust us to elevate your outdoor spaces with professional expertise and an unwavering commitment to quality service.</p>
+        <div class="about-tags">
+          <span class="about-tag">Licensed &amp; Insured</span>
+          <span class="about-tag">Residential &amp; Commercial</span>
+          <span class="about-tag">Year-Round Service</span>
+          <span class="about-tag">SW Michigan</span>
+          <span class="about-tag">Northern Indiana</span>
+        </div>
+      </div>
+      <div class="about-images fade-in">
+        <img class="about-img" src="https://mattslawncare.biz/wp-content/uploads/2024/02/landscape-excavation-e1708813724136.png" alt="Landscape Excavation" loading="lazy" />
+        <img class="about-img" src="https://mattslawncare.biz/wp-content/uploads/2024/02/Seasonal-Repairs.png" alt="Seasonal Repairs" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── WORK GALLERY ── -->
+  <section id="work">
+    <div class="section-header fade-in">
+      <span class="section-label">Portfolio</span>
+      <h2 class="section-title">Our Work</h2>
+      <p class="section-sub">A look at the properties we've transformed — from lush lawns and rock beds to full landscape installations.</p>
+    </div>
+    <div class="gallery-masonry fade-in">
+      <div class="gallery-item">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/landscape-lake.png" alt="Landscape by lake" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/commercial-property-services-rock-beds.png" alt="Rock beds" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/flower-beds.jpg" alt="Flower beds" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/garden-beds-landscape-e1708820943985.png" alt="Garden beds" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/landscape-rock-wall-berrien-springs-1.png" alt="Rock wall" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/Commercial-Landscape-Services-Niles-MI-1.png" alt="Commercial landscape" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/flower-beds-residential.jpg" alt="Residential flower beds" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/landscape-residential-lawn-care.jpg" alt="Residential lawn care" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/Landscape-Maintenance.png" alt="Landscape maintenance" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/stone-work.jpg" alt="Stone work" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/lawn-care-services.jpg" alt="Lawn care" loading="lazy" />
+      </div>
+      <div class="gallery-item">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2021/07/matts_equipment.jpg" alt="Matt's equipment" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── TESTIMONIALS ── -->
+  <section id="testimonials">
+    <div class="testimonials-header section-header fade-in">
+      <span class="section-label">From Our Clients</span>
+      <h2 class="section-title">What People Say</h2>
+    </div>
+    <div class="testimonials-track" id="testimonialTrack">
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-quote">"Matt Burks manages a very professional landscaping business. He is responsive, honest and charges a reasonable price for his services. I highly recommend Matt to others who require lawn care services."</p>
+        <div class="testimonial-author-name">John Meyer</div>
+        <div class="testimonial-author-role">Residential Client</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-quote">"Very professional, did an awesome job. I use them for snow plowing, we also use them for mowing our yard and they brush hog the field next to us. Awesome company."</p>
+        <div class="testimonial-author-name">James Green</div>
+        <div class="testimonial-author-role">Residential &amp; Commercial Client</div>
+      </div>
+      <div class="testimonial-card">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-quote">"Had Matt's lawn care come out and do some yard work for us this spring — they did an awesome job, very pleased."</p>
+        <div class="testimonial-author-name">Caleb Luthringer</div>
+        <div class="testimonial-author-role">Residential Client</div>
+      </div>
+      <div class="testimonial-card" style="background: rgba(139,197,61,0.04); border-color: rgba(139,197,61,0.2);">
+        <div class="stars">★★★★★</div>
+        <p class="testimonial-quote" style="color: rgba(255,255,255,0.6);">Happy with our service? Leave us a review on Google — it helps us grow and helps others find quality lawn care.</p>
+        <a href="https://g.page/r/CbMP13AITLCuEB0/review" target="_blank" rel="noopener" class="btn-primary" style="margin-top: 20px; display: inline-flex; font-size: 0.88rem; padding: 12px 24px;">Leave a Review ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ── -->
+  <section id="cta">
+    <div class="cta-orb"></div>
+    <div class="cta-content fade-in">
+      <span class="section-label">Get in Touch</span>
+      <h2 class="cta-title">Ready for a<br /><span class="green">Better Lawn?</span></h2>
+      <p class="cta-sub">Call for a free quote — serving Southwest Michigan and Northern Indiana for residential and commercial properties.</p>
+      <a href="tel:2694149607" class="cta-phone">269.414.9607</a>
+      <div class="cta-buttons">
+        <a href="tel:2694149607" class="btn-primary">Call Now</a>
+        <a href="https://mattslawncare.biz" target="_blank" class="btn-secondary">Visit Full Site ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2023/02/matts_footer_white_new_trans.png" alt="Matt's Lawn Care" />
+      </div>
+      <p class="footer-service-area">Serving Southwest Michigan &amp; Northern Indiana — Lawn Maintenance, Landscaping, Irrigation, Snow Removal &amp; Plowing, Excavation &amp; Bobcat Work.</p>
+      <div class="footer-links">
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#work">Our Work</a>
+        <a href="#testimonials">Reviews</a>
+        <a href="https://mattslawncare.biz" target="_blank">mattslawncare.biz</a>
+        <a href="https://www.facebook.com/mburks1998/" target="_blank">Facebook</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 Matt's Lawn Care &amp; Snow Plow LLC. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ── STARSCAPE ──
+    const canvas = document.getElementById('starscape');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+
+    function initStars() {
+      stars = [];
+      for (let i = 0; i < 160; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 1.2 + 0.2,
+          baseOpacity: Math.random() * 0.5 + 0.15,
+          driftX: (Math.random() - 0.5) * 0.015,
+          driftY: (Math.random() - 0.5) * 0.008,
+          twinkleSpeed: Math.random() * 0.0008 + 0.0003,
+          twinklePhase: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function resizeStarscape() {
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      ctx.scale(dpr, dpr);
+      initStars();
+    }
+
+    function animateStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(star => {
+        star.x += star.driftX;
+        star.y += star.driftY;
+        if (star.x < 0) star.x = window.innerWidth;
+        if (star.x > window.innerWidth) star.x = 0;
+        if (star.y < 0) star.y = window.innerHeight;
+        if (star.y > window.innerHeight) star.y = 0;
+        const twinkle = Math.sin(Date.now() * star.twinkleSpeed + star.twinklePhase);
+        const opacity = Math.max(0, star.baseOpacity + twinkle * 0.25);
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${opacity})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(animateStars);
+    }
+
+    resizeStarscape();
+    animateStars();
+    window.addEventListener('resize', resizeStarscape);
+
+    // ── SCROLL PROGRESS ──
+    const scrollProgress = document.getElementById('scrollProgress');
+    const navbar = document.getElementById('navbar');
+
+    window.addEventListener('scroll', () => {
+      const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+      scrollProgress.style.width = pct + '%';
+      navbar.classList.toggle('nav-scrolled', window.scrollY > 80);
+    }, { passive: true });
+
+    // ── COUNT UP ──
+    function easeOutExpo(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
+
+    function countUp(el, target, suffix, duration) {
+      const start = performance.now();
+      el.classList.add('counting');
+      function update(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = easeOutExpo(progress);
+        const current = eased * target;
+        el.textContent = (target % 1 === 0 ? Math.floor(current) : current.toFixed(1)) + suffix;
+        if (progress < 1) { requestAnimationFrame(update); }
+        else { el.textContent = target + suffix; el.classList.remove('counting'); }
+      }
+      requestAnimationFrame(update);
+    }
+
+    const specObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const items = entry.target.querySelectorAll('.spec-item');
+          items.forEach((item, i) => {
+            setTimeout(() => {
+              const numEl = item.querySelector('.spec-number');
+              const target = parseFloat(numEl.dataset.target);
+              const suffix = numEl.dataset.suffix || '';
+              const mode = numEl.dataset.mode;
+              if (mode === 'year') { numEl.textContent = target; return; }
+              countUp(numEl, target, suffix, 1800);
+            }, i * 180);
+          });
+          specObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    specObserver.observe(document.getElementById('specs'));
+
+    // ── FADE IN ON SCROLL ──
+    const fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          fadeObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+
+    // ── TESTIMONIALS DRAG ──
+    const track = document.getElementById('testimonialTrack');
+    let isDown = false, startX, scrollLeft;
+    track.addEventListener('mousedown', e => {
+      isDown = true; track.style.cursor = 'grabbing';
+      startX = e.pageX - track.offsetLeft; scrollLeft = track.scrollLeft;
+    });
+    track.addEventListener('mouseleave', () => { isDown = false; track.style.cursor = 'grab'; });
+    track.addEventListener('mouseup', () => { isDown = false; track.style.cursor = 'grab'; });
+    track.addEventListener('mousemove', e => {
+      if (!isDown) return;
+      e.preventDefault();
+      track.scrollLeft = scrollLeft - (e.pageX - track.offsetLeft - startX);
+    });
+  </script>
+</body>
+</html>
