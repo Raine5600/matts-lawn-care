@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Work — Matt's Lawn Care & Snow Plow LLC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --accent: #8bc53d; --accent-rgb: 139,197,61; --bg: #02040a;
+      --text: #ffffff; --text-secondary: #99A1AF;
+      --card-bg: rgba(255,255,255,0.03); --card-border: rgba(255,255,255,0.07);
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    ::selection{background:var(--accent);color:#000;}
+    ::-webkit-scrollbar{width:6px;} ::-webkit-scrollbar-track{background:transparent;} ::-webkit-scrollbar-thumb{background:rgba(139,197,61,0.3);border-radius:3px;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Open Sans',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+    h1,h2,h3,h4,h5{font-family:'Tajawal',sans-serif;font-weight:800;letter-spacing:-0.02em;}
+
+    #scrollProgress{position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,var(--accent),#b8e04a);z-index:10000;transition:width 0.08s linear;pointer-events:none;}
+    #starscape{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.5;}
+
+    /* NAV */
+    #navbar{position:fixed;top:12px;left:0;right:0;z-index:1000;transition:all 0.4s cubic-bezier(0.16,1,0.3,1);}
+    .nav-inner{max-width:100%;margin:0 auto;padding:14px 40px;display:flex;justify-content:space-between;align-items:center;transition:all 0.4s cubic-bezier(0.16,1,0.3,1);}
+    #navbar.nav-scrolled .nav-inner{max-width:900px;background:rgba(2,4,10,0.85);border:1px solid var(--card-border);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:100px;padding:10px 28px;}
+    .nav-logo img{height:36px;width:auto;display:block;}
+    .nav-links{display:flex;align-items:center;gap:32px;}
+    .nav-links a{color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.88rem;font-weight:600;transition:color 0.2s;font-family:'Open Sans',sans-serif;}
+    .nav-links a:hover,.nav-links a.active{color:var(--accent);}
+    .nav-cta{background:var(--accent)!important;color:#000!important;padding:9px 22px;border-radius:100px;font-weight:700!important;box-shadow:0 0 18px rgba(139,197,61,0.35);transition:box-shadow 0.3s ease,transform 0.2s ease!important;}
+    .nav-cta:hover{box-shadow:0 0 28px rgba(139,197,61,0.55)!important;transform:translateY(-1px);}
+    @media(max-width:768px){.nav-links{display:none;}.nav-inner{padding:10px 24px;}}
+
+    /* PAGE HERO */
+    .page-hero{position:relative;z-index:1;padding:180px 32px 100px;text-align:center;overflow:hidden;}
+    .page-hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:800px;height:800px;border-radius:50%;background:var(--accent);filter:blur(220px);opacity:0.05;pointer-events:none;}
+    .page-hero-label{display:inline-block;color:var(--accent);font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;margin-bottom:20px;font-family:'Open Sans',sans-serif;}
+    .page-hero-title{font-family:'Tajawal',sans-serif;font-size:clamp(3rem,8vw,6.5rem);font-weight:900;letter-spacing:-0.04em;line-height:0.92;margin-bottom:24px;}
+    .page-hero-title .green{color:var(--accent);}
+    .page-hero-sub{color:var(--text-secondary);max-width:560px;margin:0 auto;line-height:1.6;font-size:1rem;}
+
+    /* SHARED */
+    .section-label{display:inline-block;color:var(--accent);font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.25em;margin-bottom:14px;font-family:'Open Sans',sans-serif;}
+    .section-title{font-family:'Tajawal',sans-serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;letter-spacing:-0.04em;line-height:1;}
+    .section-sub{color:var(--text-secondary);max-width:540px;margin:16px auto 0;line-height:1.6;font-size:0.95rem;}
+    .section-header{text-align:center;margin-bottom:64px;}
+    .section-divider{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--card-border),transparent);position:relative;z-index:1;}
+    .fade-in{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease;}
+    .fade-in.visible{opacity:1;transform:translateY(0);}
+    .fade-in-delay-1{transition-delay:0.1s;}
+    .fade-in-delay-2{transition-delay:0.2s;}
+
+    /* FILTER PILLS */
+    .filter-section{position:relative;z-index:1;padding:0 32px 60px;}
+    .filter-pills{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+    .filter-pill{padding:9px 22px;border-radius:100px;border:1px solid var(--card-border);background:var(--card-bg);color:rgba(255,255,255,0.6);font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.2s ease;font-family:'Open Sans',sans-serif;}
+    .filter-pill:hover,.filter-pill.active{border-color:var(--accent);color:var(--accent);background:rgba(139,197,61,0.07);}
+
+    /* GALLERY */
+    .gallery-section{position:relative;z-index:1;padding:0 32px 120px;}
+    .gallery-masonry{columns:4;column-gap:16px;max-width:1300px;margin:0 auto;}
+    .gallery-item{break-inside:avoid;margin-bottom:16px;border-radius:14px;overflow:hidden;border:1px solid var(--card-border);position:relative;cursor:pointer;}
+    .gallery-item img{width:100%;display:block;transition:transform 0.5s ease,filter 0.3s ease;filter:brightness(0.88) saturate(0.85);}
+    .gallery-item:hover img{transform:scale(1.05);filter:brightness(1.05) saturate(1.15);}
+    .gallery-item-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(2,4,10,0.7) 0%,transparent 50%);opacity:0;transition:opacity 0.3s ease;display:flex;align-items:flex-end;padding:20px;}
+    .gallery-item:hover .gallery-item-overlay{opacity:1;}
+    .gallery-item-tag{font-size:0.75rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.1em;font-family:'Open Sans',sans-serif;}
+    @media(max-width:1100px){.gallery-masonry{columns:3;}}
+    @media(max-width:768px){.gallery-masonry{columns:2;}}
+    @media(max-width:480px){.gallery-masonry{columns:1;}}
+
+    /* LIGHTBOX */
+    #lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;display:none;align-items:center;justify-content:center;backdrop-filter:blur(12px);}
+    #lightbox.open{display:flex;}
+    #lightbox img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:12px;border:1px solid var(--card-border);}
+    #lightboxClose{position:absolute;top:24px;right:32px;font-size:2rem;color:rgba(255,255,255,0.6);cursor:pointer;background:none;border:none;transition:color 0.2s;}
+    #lightboxClose:hover{color:#fff;}
+
+    /* CTA */
+    .cta-section{position:relative;z-index:1;padding:120px 32px;text-align:center;overflow:hidden;}
+    .cta-orb{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;border-radius:50%;background:var(--accent);filter:blur(200px);opacity:0.07;pointer-events:none;}
+    .cta-content{position:relative;z-index:1;max-width:700px;margin:0 auto;}
+    .cta-title{font-family:'Tajawal',sans-serif;font-size:clamp(2.5rem,6vw,5rem);font-weight:900;letter-spacing:-0.04em;line-height:0.95;margin-bottom:24px;}
+    .cta-title .green{color:var(--accent);}
+    .cta-sub{color:var(--text-secondary);margin-bottom:48px;font-size:1rem;line-height:1.6;}
+    .cta-phone{display:block;font-family:'Tajawal',sans-serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:900;color:var(--accent);text-decoration:none;letter-spacing:-0.02em;margin-bottom:32px;text-shadow:0 0 40px rgba(139,197,61,0.3);transition:text-shadow 0.3s ease;}
+    .cta-phone:hover{text-shadow:0 0 60px rgba(139,197,61,0.5);}
+    .cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+    .btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#000;padding:16px 36px;border-radius:12px;font-weight:700;font-size:1rem;text-decoration:none;font-family:'Tajawal',sans-serif;box-shadow:0 0 24px rgba(139,197,61,0.4);transition:all 0.3s ease;}
+    .btn-primary:hover{box-shadow:0 0 40px rgba(139,197,61,0.6);transform:translateY(-3px);}
+    .btn-secondary{display:inline-flex;align-items:center;gap:8px;background:transparent;color:#fff;padding:16px 36px;border-radius:12px;font-weight:600;font-size:1rem;text-decoration:none;border:1px solid rgba(255,255,255,0.25);font-family:'Tajawal',sans-serif;transition:all 0.3s ease;}
+    .btn-secondary:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-3px);}
+
+    /* FOOTER */
+    footer{position:relative;z-index:1;border-top:1px solid var(--card-border);padding:60px 32px 40px;}
+    .footer-inner{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:32px;}
+    .footer-logo img{height:44px;width:auto;opacity:0.9;}
+    .footer-links{display:flex;gap:32px;flex-wrap:wrap;justify-content:center;}
+    .footer-links a{color:var(--text-secondary);text-decoration:none;font-size:0.87rem;transition:color 0.2s;}
+    .footer-links a:hover{color:var(--accent);}
+    .footer-copy{color:rgba(255,255,255,0.25);font-size:0.78rem;text-align:center;}
+    .footer-service-area{color:var(--text-secondary);font-size:0.82rem;text-align:center;max-width:500px;line-height:1.6;}
+  </style>
+</head>
+<body>
+  <div id="scrollProgress"></div>
+  <canvas id="starscape"></canvas>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox">
+    <button id="lightboxClose">&times;</button>
+    <img id="lightboxImg" src="" alt="" />
+  </div>
+
+  <nav id="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <a href="index.html"><img src="https://mattslawncare.biz/wp-content/uploads/2023/02/matts_new_trans.png" alt="Matt's Lawn Care" /></a>
+      </div>
+      <div class="nav-links">
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="work.html" class="active">Our Work</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="quote.html" class="nav-cta">Get a Quote</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <span class="page-hero-label">Portfolio</span>
+    <h1 class="page-hero-title">Properties<br /><span class="green">We've Transformed</span></h1>
+    <p class="page-hero-sub">From lush residential lawns to full commercial landscape installations — a look at the work we take pride in.</p>
+  </div>
+
+  <!-- FILTER PILLS -->
+  <div class="filter-section">
+    <div class="filter-pills">
+      <button class="filter-pill active" data-filter="all">All Work</button>
+      <button class="filter-pill" data-filter="lawn">Lawn Care</button>
+      <button class="filter-pill" data-filter="landscape">Landscaping</button>
+      <button class="filter-pill" data-filter="snow">Snow &amp; Winter</button>
+      <button class="filter-pill" data-filter="excavation">Excavation</button>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="gallery-section">
+    <div class="gallery-masonry" id="gallery">
+
+      <div class="gallery-item fade-in" data-category="landscape">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/landscape-lake.png" alt="Landscape by lake" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-tag">Landscaping</span></div>
+      </div>
+      <div class="gallery-item fade-in" data-category="landscape">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/commercial-property-services-rock-beds.png" alt="Rock beds" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-tag">Rock Beds</span></div>
+      </div>
+      <div class="gallery-item fade-in" data-category="landscape">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/flower-beds.jpg" alt="Flower beds" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-tag">Garden Beds</span></div>
+      </div>
+      <div class="gallery-item fade-in" data-category="landscape">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/garden-beds-landscape-e1708820943985.png" alt="Garden beds" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-tag">Garden Beds</span></div>
+      </div>
+      <div class="gallery-item fade-in" data-category="landscape">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/landscape-rock-wall-berrien-springs-1.png" alt="Rock wall" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-tag">Rock Wall</span></div>
+      </div>
+      <div class="gallery-item fade-in" data-category="lawn">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/Commercial-Landscape-Services-Niles-MI-1.png" alt="Commercial landscape" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-tag">Commercial</span></div>
+      </div>
+      <div class="gallery-item fade-in" data-category="landscape">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/flower-beds-residential.jpg" alt="Residential flower beds" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-tag">Residential</span></div>
+      </div>
+      <div class="gallery-item fade-in" data-category="lawn">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/landscape-residential-lawn-care.jpg" alt="Residential lawn care" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-tag">Lawn Care</span></div>
+      </div>
+      <div class="gallery-item fade-in" data-category="landscape">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/Landscape-Maintenance.png" alt="Landscape maintenance" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-tag">Maintenance</span></div>
+      </div>
+      <div class="gallery-item fade-in" data-category="landscape">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/stone-work.jpg" alt="Stone work" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-tag">Stone Work</span></div>
+      </div>
+      <div class="gallery-item fade-in" data-category="lawn">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/lawn-care-services.jpg" alt="Lawn care" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-tag">Lawn Care</span></div>
+      </div>
+      <div class="gallery-item fade-in" data-category="excavation">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2021/07/matts_equipment.jpg" alt="Matt's equipment" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-tag">Equipment</span></div>
+      </div>
+      <div class="gallery-item fade-in" data-category="excavation">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/landscape-excavation-e1708813724136.png" alt="Excavation" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-tag">Excavation</span></div>
+      </div>
+      <div class="gallery-item fade-in" data-category="snow">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/snow-removal-commercial.png" alt="Snow removal" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-tag">Snow Removal</span></div>
+      </div>
+      <div class="gallery-item fade-in" data-category="landscape">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/irrigation-maintenance-2-e1708992242114.png" alt="Irrigation" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-tag">Irrigation</span></div>
+      </div>
+      <div class="gallery-item fade-in" data-category="landscape">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2024/02/Seasonal-Repairs.png" alt="Seasonal repairs" loading="lazy" />
+        <div class="gallery-item-overlay"><span class="gallery-item-tag">Seasonal</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section-divider" style="position:relative;z-index:1;"></div>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="cta-orb"></div>
+    <div class="cta-content fade-in">
+      <span class="section-label">Get in Touch</span>
+      <h2 class="cta-title">Want Results<br /><span class="green">Like These?</span></h2>
+      <p class="cta-sub">Call for a free estimate — we serve Southwest Michigan and Northern Indiana for residential and commercial properties.</p>
+      <a href="tel:2694149607" class="cta-phone">269.414.9607</a>
+      <div class="cta-buttons">
+        <a href="quote.html" class="btn-primary">Get a Free Quote</a>
+        <a href="services.html" class="btn-secondary">Our Services ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <img src="https://mattslawncare.biz/wp-content/uploads/2023/02/matts_footer_white_new_trans.png" alt="Matt's Lawn Care" />
+      </div>
+      <p class="footer-service-area">Serving Southwest Michigan &amp; Northern Indiana — Lawn Maintenance, Landscaping, Irrigation, Snow Removal &amp; Plowing, Excavation &amp; Bobcat Work.</p>
+      <div class="footer-links">
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="work.html">Our Work</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="https://mattslawncare.biz" target="_blank">mattslawncare.biz</a>
+        <a href="https://www.facebook.com/mburks1998/" target="_blank">Facebook</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 Matt's Lawn Care &amp; Snow Plow LLC. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    const canvas=document.getElementById('starscape');
+    const ctx=canvas.getContext('2d');
+    let stars=[];
+    function initStars(){stars=[];for(let i=0;i<160;i++){stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,radius:Math.random()*1.2+0.2,baseOpacity:Math.random()*0.5+0.15,driftX:(Math.random()-0.5)*0.015,driftY:(Math.random()-0.5)*0.008,twinkleSpeed:Math.random()*0.0008+0.0003,twinklePhase:Math.random()*Math.PI*2});}}
+    function resizeStarscape(){const dpr=window.devicePixelRatio||1;canvas.width=window.innerWidth*dpr;canvas.height=window.innerHeight*dpr;canvas.style.width=window.innerWidth+'px';canvas.style.height=window.innerHeight+'px';ctx.scale(dpr,dpr);initStars();}
+    function animateStars(){ctx.clearRect(0,0,canvas.width,canvas.height);stars.forEach(s=>{s.x+=s.driftX;s.y+=s.driftY;if(s.x<0)s.x=window.innerWidth;if(s.x>window.innerWidth)s.x=0;if(s.y<0)s.y=window.innerHeight;if(s.y>window.innerHeight)s.y=0;const tw=Math.sin(Date.now()*s.twinkleSpeed+s.twinklePhase);const op=Math.max(0,s.baseOpacity+tw*0.25);ctx.beginPath();ctx.arc(s.x,s.y,s.radius,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${op})`;ctx.fill();});requestAnimationFrame(animateStars);}
+    resizeStarscape();animateStars();
+    window.addEventListener('resize',resizeStarscape);
+
+    const scrollProgress=document.getElementById('scrollProgress');
+    const navbar=document.getElementById('navbar');
+    window.addEventListener('scroll',()=>{const pct=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;scrollProgress.style.width=pct+'%';navbar.classList.toggle('nav-scrolled',window.scrollY>80);},{passive:true});
+
+    const fadeObserver=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible');fadeObserver.unobserve(entry.target);}});},{threshold:0.05});
+    document.querySelectorAll('.fade-in').forEach(el=>fadeObserver.observe(el));
+
+    // FILTER
+    const pills=document.querySelectorAll('.filter-pill');
+    const items=document.querySelectorAll('.gallery-item');
+    pills.forEach(pill=>{
+      pill.addEventListener('click',()=>{
+        pills.forEach(p=>p.classList.remove('active'));
+        pill.classList.add('active');
+        const filter=pill.dataset.filter;
+        items.forEach(item=>{
+          if(filter==='all'||item.dataset.category===filter){
+            item.style.display='';
+          } else {
+            item.style.display='none';
+          }
+        });
+      });
+    });
+
+    // LIGHTBOX
+    const lightbox=document.getElementById('lightbox');
+    const lightboxImg=document.getElementById('lightboxImg');
+    const lightboxClose=document.getElementById('lightboxClose');
+    items.forEach(item=>{
+      item.addEventListener('click',()=>{
+        const img=item.querySelector('img');
+        lightboxImg.src=img.src;
+        lightboxImg.alt=img.alt;
+        lightbox.classList.add('open');
+        document.body.style.overflow='hidden';
+      });
+    });
+    lightboxClose.addEventListener('click',()=>{lightbox.classList.remove('open');document.body.style.overflow='';});
+    lightbox.addEventListener('click',e=>{if(e.target===lightbox){lightbox.classList.remove('open');document.body.style.overflow='';}});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'){lightbox.classList.remove('open');document.body.style.overflow='';}});
+  </script>
+</body>
+</html>
